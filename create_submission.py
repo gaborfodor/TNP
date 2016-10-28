@@ -13,12 +13,10 @@ NJOBS = 6
 def parse_xgb_cv_result(result):
     result_df = []
     print result
-    for row in result:
-        print row
-        row_tab_sep = row.split('\t')
-        iteration = int(row_tab_sep[0][1:-1])
-        test_logloss = np.float(row_tab_sep[1].split(':')[1].split('+')[0])
-        test_logloss_std = np.float(row_tab_sep[1].split(':')[1].split('+')[1])
+    for row in result.index:
+        iteration = int(row)+1
+        test_logloss = np.float(result.iloc[row,0])
+        test_logloss_std = np.float(result.iloc[row,1])
         result_df.append([iteration, test_logloss, test_logloss_std])
     result_df = pd.DataFrame(result_df, columns=['i', 'mlogloss', 'std'])
     return result_df
